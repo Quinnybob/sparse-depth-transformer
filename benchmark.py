@@ -3,13 +3,12 @@ import time
 import pandas as pd
 from model import SparseDepthTransformer, BaselineTransformer
 
-# Settings
 vocab_size = 5000
 embed_dim = 64
 num_layers = 6
 use_cuda = torch.cuda.is_available()
 batch_sizes = [2, 8, 16]
-seq_lengths = [20, 64, 128, 256]
+seq_lengths = [20, 64, 128, 256, 512, 1024]
 
 results = []
 
@@ -38,7 +37,6 @@ def benchmark_model(model_class, name, tokens, use_cuda):
         "Avg Layers/Token": round(avg_layers, 3) if avg_layers is not None else None
     }
 
-# Run benchmarks
 for batch in batch_sizes:
     for seq in seq_lengths:
         tokens = torch.randint(0, vocab_size, (batch, seq))
@@ -46,5 +44,6 @@ for batch in batch_sizes:
         results.append(benchmark_model(BaselineTransformer, "Baseline", tokens, use_cuda))
 
 # Display results
+pd.set_option('display.max_rows', None)
 df = pd.DataFrame(results)
 print(df.to_string(index=False))
