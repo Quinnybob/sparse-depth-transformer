@@ -1,115 +1,49 @@
-# SparseDepthTransformer: Per-Token Dynamic Depth Routing for Efficient Transformers
+# SparseDepthTransformer
 
-> A novel transformer architecture that routes each token through a variable number of layers based on semantic importance — reducing memory usage and unnecessary compute.
-
----
-
-##Motivation
-
-Modern transformer models waste compute by sending **every token** through **every layer**, regardless of how much semantic content each token actually carries.
-
-But do common tokens like "the" or "and" really need the same deep processing as "DNA" or "restructure"?
-
-**SparseDepthTransformer** introduces a token-wise routing mechanism that decides — in real-time — how many layers a token should pass through, based on its **semantic density**. This enables **layer skipping** on a per-token basis, which is rarely explored in transformer research.
+> A transformer architecture that dynamically skips layers per token based on semantic importance — now with true compute savings.
 
 ---
 
-## Core Idea
+##  Motivation
 
-- Score each token’s semantic importance using a learned linear probe
-- Route important tokens through all layers
-- Let less important tokens **skip deeper layers**
-- Use **hard skipping** (not soft blending) to save real compute
+In standard transformers, every token passes through every layer — regardless of whether it's a high-impact content word or a filler like “the.” This wastes compute and memory, especially in long contexts.
 
-This leads to a transformer that is **both smarter and lighter**.
+SparseDepthTransformer introduces **per-token depth skipping**. It computes a semantic score for each token and **routes only the important ones through deeper layers**.
 
----
-
-##  Benchmark Results
-
-Benchmarked on 10 runs, using sequence length = 20, batch size = 2:
-
-| Model                    | Time (sec) | Max Memory (MB) | Avg Layers per Token |
-|-------------------------|------------|------------------|-----------------------|
-| **SparseDepthTransformer** | ~0.0049     | ~23.1            | ~3.6                  |
-| **Baseline Transformer**   | ~0.0037     | ~27.0            | 6.0                  |
-
-**~40% fewer layers processed per token**  
-**~15% less GPU memory used**  
-~Slight increase in latency due to token-level execution — batching optimization planned
+This project builds on the idea of dynamic routing, adding **true hard skipping**, not just masking, and shows measurable gains in memory and layer usage.
 
 ---
 
 ##  Features
 
-- Semantic scorer module
-- Hard-skipping per-token per-layer
-- Layer usage tracking
+- Per-token **semantic scorer**
+- True **hard layer skipping**
 - Baseline transformer for comparison
-- Benchmarking script for time, memory, and depth
-  
-![image](https://github.com/user-attachments/assets/15d2bc50-98d2-404a-8811-521398b5baec)
-
+- Benchmarking across sequence lengths and batch sizes
+- Outputs average layers used per token
 
 ---
 
-##  How to Run
+##  Results
 
-###  Installation
-```bash
-pip install torch
-```
+Benchmarked across batches (2, 8, 16) and sequence lengths (20–256):
 
-###  Running the Benchmark
-```bash
-python main.py
-```
+| Model     | Avg Layers/Token | Memory Saved | Runtime Change |
+|-----------|------------------|---------------|----------------|
+| Sparse    | ~3.5              | 5–15% ↓        | Slightly ↑     |
+| Baseline  | 6.0               | –             | –              |
 
-###  Run in Colab
-Use this notebook: [Open Colab](https://colab.research.google.com/) *(https://colab.research.google.com/drive/1UDcoTnULE0fUJKJiJjsjMPei_qPVMV6p#scrollTo=Sx_UFQTYBkm9)*
+Tokens now **actually bypass computation** at deeper layers if their semantic score is low — this was verified using conditional forward logic and benchmarking.
 
 ---
 
-##  Why This Project Matters
+## Future Optimizations
+- Implement token batching by depth group to improve runtime efficiency
+- Add dropout-based probabilistic gating during training
+- Fine-tune on real datasets (e.g., TinyStories, WikiText-2) and compare perplexity
+- Integrate with HuggingFace Transformers for broader experimentation
+- Introduce curriculum learning to vary routing difficulty during training
 
-This work explores **depth sparsity**, a rarely studied axis in transformer optimization.  
-While attention sparsity and Mixture-of-Experts (MoE) are popular, per-token **layer skipping** introduces a new degree of freedom — enabling models to **spend compute only where it's needed**.
-
-> "Not every token deserves the same amount of thought."
-
-This could enable:
-- Lightweight models for mobile and edge AI
-- Faster inference on long-context inputs
-- Adaptive compute strategies in LLMs
-
----
-
-## Future Work
-
-- [ ] Batch tokens by routing level for GPU efficiency
-- [ ] Train on real data (TinyStories, Alpaca, etc.)
-- [ ] Add routing visualizations and attention heatmaps
-- [ ] Integrate with HuggingFace Transformers for broader use
-- [ ] Experiment with curriculum depth scheduling
-
----
-
-## Author
-
-This project was created by **Quinnybob**, a high school researcher focused on efficient AI systems and transformer interpretability.
-
-📧 desimoneq@gmail.com
-🔗 [GitHub Profile](https://github.com/Quinnybob)
-
----
-
-## Contributing / Contact
-
-Feel free to reach out if:
-- You're a researcher or student interested in collaborating
-- You want to integrate this into another model
-- You’d like to contribute optimizations or training runs
-
-Pull requests, ideas, and discussions are welcome!
-
-MIT License.
+## Contact
+Feel free to reach out with feedback, ideas, or collaboration opportunities!:
+**Email:** desimoneq@gmail.com
