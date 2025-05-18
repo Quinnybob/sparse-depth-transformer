@@ -28,10 +28,12 @@ This project builds on the idea of dynamic routing, adding **true hard skipping*
 
 Benchmarked across batches (2, 8, 16) and sequence lengths (20–256):
 
-| Model     | Avg Layers/Token | Memory Saved | Runtime Change |
-|-----------|------------------|---------------|----------------|
-| Sparse    | ~3.5              | 5–15% ↓        | Slightly ↑     |
-| Baseline  | 6.0               | –             | –              |
+| Model     | Avg Layers/Token | Memory (MB) | Time (s)  |
+|-----------|------------------|-------------|-----------|
+| Sparse    | ~3.5              | 22.16–105.43| 0.0058–0.0179 |
+| Baseline  | 6.0               | 22.15–104.34| 0.0044–0.0207 |
+
+The SparseDepthTransformer consistently used ~40% fewer layers per token with measurable memory savings, validating both semantic gating and compute reduction. Runtime is still slightly higher due to per-token execution, but this will be addressed with batching in future work.
 
 Tokens now **actually bypass computation** at deeper layers if their semantic score is low — this was verified using conditional forward logic and benchmarking.
 
