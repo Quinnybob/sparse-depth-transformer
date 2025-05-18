@@ -36,7 +36,7 @@ Benchmarked on 10 runs, using sequence length = 20, batch size = 2:
 
 **~40% fewer layers processed per token**  
 **~15% less GPU memory used**  
-Slight increase in latency due to token-level execution — batching optimization planned
+~Slight increase in latency due to token-level execution — batching optimization planned
 
 ---
 
