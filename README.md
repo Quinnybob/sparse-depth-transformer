@@ -1,4 +1,4 @@
-This a working project on a novel transformer architecture that routes each token through a variable number of layers based on semantic importance, reducing unnecessary computation and memory usage.
+## This a working project on a novel transformer architecture that routes each token through a variable number of layers based on semantic importance, reducing unnecessary computation and memory usage.
 
 
 Modern transformer models waste compute by sending **every token** through **every layer**, regardless of how much semantic content each token actually carries.
