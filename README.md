@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/eac42ed5-3c32-43d8-853a-ecaf41a65935)# SparseDepthTransformer: Per-Token Dynamic Depth Routing for Efficient Transformers
+# SparseDepthTransformer: Per-Token Dynamic Depth Routing for Efficient Transformers
 
 > A novel transformer architecture that routes each token through a variable number of layers based on semantic importance — reducing memory usage and unnecessary compute.
 
