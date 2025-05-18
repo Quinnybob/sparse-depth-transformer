@@ -1,4 +1,4 @@
-# SparseDepthTransformer: Per-Token Dynamic Depth Routing for Efficient Transformers
+![image](https://github.com/user-attachments/assets/eac42ed5-3c32-43d8-853a-ecaf41a65935)# SparseDepthTransformer: Per-Token Dynamic Depth Routing for Efficient Transformers
 
 > A novel transformer architecture that routes each token through a variable number of layers based on semantic importance — reducing memory usage and unnecessary compute.
 
@@ -47,6 +47,9 @@ Benchmarked on 10 runs, using sequence length = 20, batch size = 2:
 - Layer usage tracking
 - Baseline transformer for comparison
 - Benchmarking script for time, memory, and depth
+  
+![image](https://github.com/user-attachments/assets/15d2bc50-98d2-404a-8811-521398b5baec)
+
 
 ---
 
